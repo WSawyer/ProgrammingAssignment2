@@ -1,15 +1,50 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This will create a custom matrix and give us a list of our new functions
 
-## Write a short comment describing this function
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(x = matrix()){
+        
+        inv <- NULL
+        
+        set <- function(y){                                 ## setter for the matrix 
+                
+                x <<- y
+                
+                inv <<- NULL
+        }
+        
+        get <- function() x                                 ## get matrix
+        
+        setInverse <- function(inverse) inv<<- inverse      ## set inverse matrix
+        
+        getInverse <- function() inv                        ## get inverse matrix
+        
+        list(set = set, get = get,                          ## return our new lists
+             
+             setInverse = setInverse,          
+             getInverse = getInverse)                  
 }
 
 
-## Write a short comment describing this function
+## Compute the inverse of our matrix, if the inverse is already cached it will return the cached inverse.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-}
+        inv <- x$getInverse()               ## Query the x matrix's cache
+        
+        if(!is.null(inv)){                  ## If inv !equal null it has been cached
+                
+                message("getting cached data")
+                
+                return(inv)                         ## Return inv 
+                
+        } else {                                    ## If inv equals null continue
+                
+                data <- x$get() 
+                
+                inv <- solve(data, ...)             ## calculate the inverse of the matrix
+                
+                x$setInverse(inv)                   ## Cache the new inverse
+                
+                return(inv)                         ## Return inv
+                
+        }
+        
